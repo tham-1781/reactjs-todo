@@ -16,7 +16,10 @@ class TodoForm extends Component {
 
   render() {
     const buttonClass = this.state.isEditing ? 'editBtn' : 'addBtn';
-    const formClass = this.state.isEditing ? 'add-task edit-mode' : 'add-task';
+    let formClass = this.state.isEditing ? 'add-task edit-mode' : 'add-task';
+
+    formClass = this.state.error ? formClass += ' has-error' : formClass;
+
     return (
       <form className={formClass}
         onSubmit={this.state.isEditing ? this.hanleEdit : this.hanleCreate}>
@@ -46,7 +49,7 @@ class TodoForm extends Component {
     event.preventDefault();
     const taskInput = this.refs.taskInput;
     const validateTitle = this.validateTitle(taskInput.value);
-   
+
     if (validateTitle) {
       this.setState({ error: validateTitle });
       return;

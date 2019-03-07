@@ -7,6 +7,10 @@
   width: 85%;
 }
 
+.has-error {
+  height: 90px !important;
+}
+
 .error {
   color: #fff;
   padding: 6px;
