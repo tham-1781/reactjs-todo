@@ -61,8 +61,6 @@ class App extends Component {
 
   filterTask = (status) => {
     let tasks = this.state.tasks;
-    console.log(status);
-    console.log(tasks);
     if (status === true || status === false)
       tasks = tasks.filter(x => x.completed === status);
 
