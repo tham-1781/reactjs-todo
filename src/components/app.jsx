@@ -9,8 +9,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [{ id: 1, title: "Learn reactjs", completed: true }],
-      filteredTasks: [{ id: 1, title: "Learn reactjs", completed: true }]
+      tasks: this.getTasksFromStorage(),
+      filteredTasks: this.getTasksFromStorage()
     }
   }
 
@@ -35,11 +35,13 @@ class App extends Component {
     const index = tasks.indexOf(task);
     tasks[index].completed = !tasks[index].completed;
     this.setState({ tasks: tasks, filteredTasks: tasks });
+    this.saveToStorage(tasks);
   }
 
   handleDelete = (taskId) => {
     let tasks = this.state.tasks.filter(x => x.id !== taskId);
     this.setState({ tasks: tasks, filteredTasks: tasks });
+    this.saveToStorage(tasks);
   }
 
   handleSaveTask = (oldTask, newTask) => {
@@ -47,6 +49,7 @@ class App extends Component {
     const index = tasks.indexOf(oldTask);
     tasks[index].title = newTask.title;
     this.setState({ tasks: tasks, filteredTasks: tasks });
+    this.saveToStorage(tasks);
   }
 
   handleCreate = (value) => {
@@ -57,6 +60,7 @@ class App extends Component {
     });
     
     this.setState({ tasks: this.state.tasks, filteredTasks: this.state.tasks });
+    this.saveToStorage(this.state.tasks);
   }
 
   filterTask = (status) => {
@@ -78,6 +82,17 @@ class App extends Component {
           filterTask={() => this.filterTask(true)} />
       </React.Fragment>
     );
+  }
+
+  saveToStorage = (data) => {
+    localStorage.removeItem('tasks');
+    localStorage.setItem('tasks', JSON.stringify(data));
+  }
+
+  getTasksFromStorage = () => {
+    let tasks = localStorage.getItem('tasks');
+    tasks = tasks ? JSON.parse(tasks) : [];
+    return tasks;
   }
 }
 
