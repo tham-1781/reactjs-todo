@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { addTask } from "../actions/index";
 
-class TodoForm extends Component {
+function mapDispatchToProps(dispatch) {
+  return {
+    addTask: task => dispatch(addTask(task))
+  };
+}
+
+class ConnectedTaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +30,7 @@ class TodoForm extends Component {
 
     return (
       <form className={formClass}
-        onSubmit={this.state.isEditing ? this.hanleEdit : this.hanleCreate}>
+        onSubmit={this.state.isEditing ? this.handleEdit : this.addTask}>
         {this.renderError()}
         <input placeholder="Enter title..." ref="taskInput"
           defaultValue={this.props.task ? this.props.task.title : ''} />
@@ -45,7 +53,7 @@ class TodoForm extends Component {
     }
   }
 
-  hanleCreate = (event) => {
+  addTask = (event) => {
     event.preventDefault();
     const taskInput = this.refs.taskInput;
     const validateTitle = this.validateTitle(taskInput.value);
@@ -56,34 +64,18 @@ class TodoForm extends Component {
     }
 
     this.setState({ error: null });
-    this.props.createTask(this.refs.taskInput.value);
+    this.props.addTask(taskInput.value);
     this.refs.taskInput.value = '';
-  }
-
-  hanleEdit = (event) => {
-    event.preventDefault();
-    const taskInput = this.refs.taskInput;
-    const validateTitle = this.validateTitle(taskInput.value);
-    if (validateTitle) {
-      this.setState({ error: validateTitle });
-      return;
-    }
-
-    this.setState({ error: null });
-
-    let newTask = { ...this.props.task };
-    newTask.title = this.refs.taskInput.value;
-    this.props.saveTask(this.props.task, newTask);
-    this.props.handleCancelClick();
+    this.setState({ task: { title: taskInput.value, completed: false } });
   }
 
   validateTitle = (title) => {
     if (!title)
       return 'Please enter task title!!!';
-    else if (this.props.tasks.filter(x => x.title === title).length > 0)
-      return 'Task already exists!!!';
-    else return null;
+    return null;
   }
 }
 
-export default TodoForm;
+const TaskForm = connect(null, mapDispatchToProps)(ConnectedTaskForm);
+
+export default TaskForm;

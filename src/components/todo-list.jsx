@@ -1,21 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import TodoItem from './todo-item';
 
-class TodoList extends Component {
-  render() {
-    return (
-      <ul>
-        {this.renderTasks()}
-      </ul>
-    );
-  }
-
-  renderTasks = () => {
-    return this.props.tasks.map((task) => <TodoItem tasks={this.props.tasks}
-      key={task.id} toggleTask={() => this.props.toggleTask(task)}
-      task={task} deleteTask={() => this.props.deleteTask(task.id)}
-      saveTask={this.props.handleSaveTask} />);
-  }
+const TodoList = ({ tasks, toggleTask, deleteTask }) => {
+  return (
+    <ul>{tasks.map((task) =>  <TodoItem key={task.id} {...task}
+          toggleTask={() => toggleTask(task.id)}
+          deleteTask={() => deleteTask(task.id)} />)}
+    </ul>
+  );
 }
 
 export default TodoList;
