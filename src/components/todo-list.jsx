@@ -1,11 +1,13 @@
 import React from 'react';
 import TodoItem from './todo-item';
 
-const TodoList = ({ tasks, toggleTask, deleteTask }) => {
+const TodoList = ({ toggleTask, deleteTask, editClick, tasks }) => {
   return (
-    <ul>{tasks.map((task) =>  <TodoItem key={task.id} {...task}
-          toggleTask={() => toggleTask(task.id)}
-          deleteTask={() => deleteTask(task.id)} />)}
+    <ul>{tasks.map((task) => <TodoItem key={task.id} task={task}
+      isEditing={task.isEditing}
+      toggleTask={() => toggleTask(task.id)}
+      deleteTask={() => deleteTask(task.id)}
+      editClick={() => editClick(task.id)} />)}
     </ul>
   );
 }

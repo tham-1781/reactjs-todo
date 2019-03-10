@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Filter = ({ filterText, onClick }) => {
+const Filter = ({ active, children, onClick }) => {
   return (
-    <span className="filterBtn mr-15"
-      onClick={onClick}>
-      {filterText}
-    </span>
+    <button className="filterBtn mr-15"
+      onClick={onClick} disabled={active}>
+      {children}
+    </button>
   );
 }
 
