@@ -1,59 +1,39 @@
-import React, { Component } from 'react';
-import TodoForm from './todo-form';
+import React from 'react';
+import { connect } from 'react-redux';
+import TaskForm from '../containers/task-form';
 
-class TodoItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditing: false
-    };
-  }
+const ConnectedTodoItem = ({task, toggleTask, deleteTask, editClick }) => {
+  return (
+    <div>
+      {renderTaskTitle(task.editing, toggleTask, task)}
+      {renderActionSection(task.editing, deleteTask, editClick)}
+    </div>
+  );
+}
 
-  render() {
+const renderTaskTitle = (isEditing, toggleTask, task) => {
+  if(isEditing)
     return (
-      <div>
-        {this.renderTaskTitle()}
-        {this.renderActionSection()}
-      </div>
+      <TaskForm isEditing={isEditing} task={task} />
     );
-  }
+  return (
+    <li onClick={toggleTask} className={task.completed ? 'checked' : ''}>
+      {task.title}
+    </li>
+  );
+}
 
-  renderTaskTitle = () => {
-    if(this.state.isEditing)
-      return (
-        <TodoForm isEditing={true} task={this.props.task}
-        tasks={this.props.tasks} saveTask={this.props.saveTask}
-        handleCancelClick={this.handleCancelClick} />
-      );
+const renderActionSection = (isEditing, deleteTask, editClick) => {
+  if(!isEditing) {
     return (
-      <li onClick={this.props.toggleTask} className={this.getTaskStatusClass()}>
-        {this.props.task.title}
-      </li>
+      <React.Fragment>
+        <span className="edit" onClick={editClick}>edit</span>
+        <span className="close" onClick={deleteTask}>delete</span>
+      </React.Fragment>
     );
-  }
-
-  renderActionSection = () => {
-    if(!this.state.isEditing) {
-      return (
-        <div>
-          <span className="edit" onClick={this.handleEditClick}>edit</span>
-          <span className="close" onClick={this.props.deleteTask}>delete</span>
-        </div>
-      );
-    }
-  }
-
-  handleEditClick = () => {
-    this.setState({ isEditing: true });
-  }
-
-  handleCancelClick = () => {
-    this.setState({ isEditing: false });
-  }
-
-  getTaskStatusClass = () => {
-    return this.props.task.completed ? 'checked' : '';
   }
 }
+
+const TodoItem = connect()(ConnectedTodoItem);
 
 export default TodoItem;

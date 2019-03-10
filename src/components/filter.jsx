@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Filter extends Component {
-  render() {
-    return (
-      <span className="filterBtn mr-15"
-        onClick={this.props.filterTask}>
-      {this.props.filterText}</span>
-    );
-  }
+const Filter = ({ active, children, onClick }) => {
+  return (
+    <button className="filterBtn mr-15"
+      onClick={onClick} disabled={active}>
+      {children}
+    </button>
+  );
 }
 
 export default Filter;

@@ -157,11 +157,9 @@ input {
 }
 
 /* Style the "Add" button */
-.addBtn {
-  padding: 11px;
-  width: 25%;
-  border: none;
-  background: #d9d9d9;
+.addBtn, .filterBtn {
+  background: #d9d9d9; 
+  border: none;  
   color: #000;
   float: left;
   text-align: center;
@@ -171,16 +169,18 @@ input {
   border-radius: 0;
 }
 
+.addBtn {
+  padding: 11px;
+  width: 25%;  
+}
+
 .filterBtn {
   padding: 7px 17px;
-  background: #d9d9d9;
-  color: #000;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 0;
+}
+
+.filterBtn:disabled {
+  background-color: #969494;
+  color: #FFF;
 }
 
 .addBtn:hover, .filterBtn:hover {
